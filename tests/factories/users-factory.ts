@@ -10,7 +10,7 @@ export async function createUser(): Promise<User> {
   const email = faker.internet.email();
 
   const user = await db.rquery(`
-    INSERT INTO user (name, password, email)
+    INSERT INTO "user" (name, password, email)
     VALUES ($1, $2, $3)
     RETURNING *
   `, [name, hashedPassword, email]);

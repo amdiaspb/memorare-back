@@ -8,7 +8,7 @@ export async function createSession(userId?: number): Promise<Session> {
   const token = generateToken(userId);
 
   const session = await db.rquery(`
-    INSERT INTO session (user_id, token)
+    INSERT INTO "session" (user_id, token)
     VALUES ($1, $2)
     RETURNING *
   `, [userId, token]);

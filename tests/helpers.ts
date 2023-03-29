@@ -1,5 +1,5 @@
-import { db } from "./configs";
+import { db } from "@/configs";
 
 export async function cleanDb() {
-  await db.query(`TRUNCATE user CASCADE`);
+  await db.query(`TRUNCATE "user" CASCADE`);
 }

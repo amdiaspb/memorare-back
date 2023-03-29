@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
-import { createUser } from "@/factories";
 import { db } from '@/configs';
 import { Session } from "@/protocols";
+import { createUser } from "./users-factory";
 
 export async function createSession(userId?: number): Promise<Session> {
   if (!userId) userId = (await createUser()).id;

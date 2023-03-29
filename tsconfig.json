@@ -11,6 +11,5 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
   },
-
   "include": ["src", "tests"],
 }

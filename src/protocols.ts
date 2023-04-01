@@ -30,6 +30,15 @@ export type Deck = {
   readme: string;
   visibility: string;
   user_id: number;
+  deck_snapshot_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type DeckSnapshot = {
+  id: number;
+  name: string;
+  state: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -74,7 +83,7 @@ export type WorkshopSession = {
 export type Study = {
   id: number;
   user_id: number;
-  deck_id: number;
+  deck_snapshot_id: number;
   hard_interval: number;
   good_interval: number;
   easy_interval: number;
@@ -89,6 +98,7 @@ export type Study = {
 export type StudySession = {
   id: number;
   state: string;
+  content: string;
   study_id: number;
   created_at: Date;
   updated_at: Date;

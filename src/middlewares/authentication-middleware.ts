@@ -13,11 +13,12 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
   if (!token) return generateUnauthorizedResponse(res);
 
   try {
-    const { userId } = jwt.verify(token, process.env.JWT_SECRET) as JWTPayload;
-
-    const session = await db.rquery(`SELECT id FROM session`);
+    const session = await db.rquery(`
+      SELECT id FROM session WHERE token=$1
+    `, [token]);
     if (!session) return generateUnauthorizedResponse(res);
-
+    
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET) as JWTPayload;
     req.userId = userId;
     next();
   } catch (err) {

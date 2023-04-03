@@ -1,4 +1,4 @@
-import { db } from "@/configs";
+/* import { db } from "@/configs";
 import { User, WorkshopSession } from "@/protocols";
 import { WorkshopSessionState } from "@/services";
 
@@ -43,3 +43,4 @@ export const workshopRepository = {
   create,
   update
 }
+ */

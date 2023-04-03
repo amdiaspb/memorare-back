@@ -1,4 +1,4 @@
-// import userService from "@/services/users-service";
+/* // import userService from "@/services/users-service";
 import { AuthenticatedRequest } from "@/middlewares";
 import { UpsertWorkshopSessionParams } from "@/schemas";
 import { authService, workshopService } from "@/services";
@@ -41,3 +41,4 @@ export async function upsertWorkshopSession(req: AuthenticatedRequest, res: Resp
     return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
+ */

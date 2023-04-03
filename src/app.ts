@@ -20,7 +20,7 @@ app
 
   // DECKS ============================================
 
-  
+
   .post("/decks", async (req, res) => {
     const authHeader = req.header("Authorization");
     const token = authHeader.split(" ")[1];
@@ -55,27 +55,46 @@ app
     res.status(httpStatus.CREATED).send(deck);
   })
 
-  .get("/decks/user", async(req, res) => {
-    const authHeader = req.header("Authorization");
-    const token = authHeader.split(" ")[1];
-
-    const query = await db.query(`
-      SELECT d.* 
-      FROM "deck" AS d
-      JOIN "session" AS s
-      ON d.user_id = s.user_id
-      WHERE s.token = $1
-    `, [token]);
-
-    res.send(query.rows);
-  })
-
   .get("/decks", async(req, res) => {
     const query = await db.query(`
       SELECT * FROM "deck";
     `);
 
     res.send(query.rows);
+  })
+
+  .get("/decks/user", async(req, res) => {
+    const authHeader = req.header("Authorization");
+    const token = authHeader.split(" ")[1];
+
+    const session = await db.rquery(`
+      SELECT * FROM "session" WHERE token=$1;
+    `, [token]);
+    if (!session) return res.sendStatus(400);
+
+    const decks = await db.query(`
+      SELECT * FROM "deck" WHERE user_id=$1
+    `, [session.user_id]);
+
+    res.send(decks.rows);
+  })
+
+  .get("/decks/:deckId", async(req, res) => {
+    const authHeader = req.header("Authorization");
+    const token = authHeader.split(" ")[1];
+
+    const session = await db.rquery(`
+      SELECT * FROM "session" WHERE token=$1;
+    `, [token]);
+    if (!session) return res.sendStatus(400);
+
+    const deckId = +req.params.deckId;
+    const deck = await db.rquery(`
+      SELECT * FROM "deck" WHERE id=$1 AND user_id=$2
+    `, [deckId, session.user_id]);
+    if (!deck) return res.sendStatus(400);
+
+    res.send(deck);
   })
 
   .patch("/decks/:deckId", async (req, res) => {
@@ -400,12 +419,17 @@ app
     if (!session) return res.sendStatus(400);
 
     const deckId = +req.params.deckId;
-    const cards = await db.rquery(`
-      SELECT id, altered FROM "card" WHERE deck_id=$1 AND user_id=$2
-    `, [deckId, session.user_id]);
+    const deck = await db.rquery(`
+      SELECT id FROM "deck" WHERE user_id=$1
+    `, [session.user_id]);
+    if (!deck) return res.sendStatus(400);
+
+    const cards = await db.query(`
+      SELECT id, altered FROM "card" WHERE deck_id=$1
+    `, [deckId]);
     if (!cards) return res.sendStatus(400);
 
-    res.send(cards);
+    res.send(cards.rows);
   })
 
   .get("/cards/:cardId", async(req, res) => {
@@ -479,25 +503,30 @@ app
     res.send(httpStatus.CREATED);
   })
 
-  .patch("/cards", async (req, res) => {
+  .patch("/cards/:cardId", async (req, res) => {
     const authHeader = req.header("Authorization");
     const token = authHeader.split(" ")[1];
-
+    
     const session = await db.rquery(`
-      SELECT * FROM "session" WHERE token=$1;
+    SELECT * FROM "session" WHERE token=$1;
     `, [token]);
     if (!session) return res.sendStatus(400);
-
-    const { deckId } = req.body;
+    
+    const cardId = +req.params.cardId;
+    const card = await db.rquery(`
+    SELECT deck_id FROM "card" WHERE id=$1;
+    `, [cardId]);
+    if (!card) return res.sendStatus(400);
+    
     const deck = await db.rquery(`
-      SELECT * FROM "deck" WHERE id=$1;
-    `, [deckId]);
+    SELECT id FROM "deck" WHERE id=$1;
+    `, [card.deck_id]);
     if (!deck) return res.sendStatus(400);
 
-    const { card } = req.body;
     await db.rquery(`
       UPDATE "card" SET front=$1, back=$2 WHERE id=$3;
-    `, [card.front, card.back, card.id]);
+    `, [req.body.front, req.body.back, cardId]);
+
     res.send("PATCHED!");
   })
 

@@ -1,4 +1,4 @@
-
+/* 
 import { WorkshopSession } from "@/protocols";
 import { workshopRepository, WorkshopSessionId } from "@/repositories";
 import { notFoundError, unauthorizedError } from "@/errors";
@@ -48,3 +48,4 @@ export const workshopService = {
   findWorkshopSession,
   upsertWorkshopSession
 }
+ */

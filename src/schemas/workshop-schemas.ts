@@ -1,4 +1,4 @@
-import { WorkshopSessionState } from "@/services";
+/* import { WorkshopSessionState } from "@/services";
 import joi from "joi";
 
 export const upsertWorkshopSessionSchema = joi.object({
@@ -17,3 +17,4 @@ export type UpsertWorkshopSessionParams = {
   deckId: number,
   stateObj: WorkshopSessionState
 }
+ */

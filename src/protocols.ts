@@ -28,9 +28,9 @@ export type Deck = {
   id: number;
   name: string;
   readme: string;
-  visibility: string;
   user_id: number;
   deck_snapshot_id: number;
+  visibility: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -38,25 +38,25 @@ export type Deck = {
 export type DeckSnapshot = {
   id: number;
   name: string;
-  state: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
-export type Card = {
-  id: number;
-  name: string;
-  front: string;
-  back: string;
-  deck_id: number;
+  readme: string;
+  visibility: string;
+  cards: string;
   created_at: Date;
   updated_at: Date;
 }
 
 export type DeckTag = {
   id: number;
+  saved: boolean;
   tag_id: number;
   deck_id: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type Tag = {
+  id: number;
+  name: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -71,10 +71,12 @@ export type Review = {
   updated_at: Date;
 }
 
-export type WorkshopSession = {
+export type Card = {
   id: number;
-  state: string;
-  user_id: number;
+  name: string;
+  front: string;
+  back: string;
+  altered: boolean;
   deck_id: number;
   created_at: Date;
   updated_at: Date;
@@ -100,13 +102,6 @@ export type StudySession = {
   state: string;
   content: string;
   study_id: number;
-  created_at: Date;
-  updated_at: Date;
-}
-
-export type Tag = {
-  id: number;
-  name: string;
   created_at: Date;
   updated_at: Date;
 }

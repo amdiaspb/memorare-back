@@ -30,7 +30,7 @@ export type Deck = {
   readme: string;
   user_id: number;
   deck_snapshot_id: number;
-  visibility: string;
+  visibility: boolean;
   created_at: Date;
   updated_at: Date;
 }
@@ -39,7 +39,7 @@ export type DeckSnapshot = {
   id: number;
   name: string;
   readme: string;
-  visibility: string;
+  visibility: boolean;
   cards: string;
   created_at: Date;
   updated_at: Date;

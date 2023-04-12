@@ -19,6 +19,7 @@ function validate(schema: ObjectSchema, type: "body" | "params") {
 
     if (error) {
       const err = invalidDataError(error.details.map(d => d.message));
+      console.log(err);
       res.status(httpStatus.BAD_REQUEST).send(err);
     } else {
       next();

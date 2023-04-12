@@ -24,7 +24,8 @@ function dbDisconnect(): void {
 
 const db = { 
   query: simpleQuery,
-  rquery: resultQuery
+  rquery: resultQuery,
+  rquerya: resultQueryArray
 };
 
 function simpleQuery(text: string, values?: any[]) {
@@ -35,6 +36,12 @@ async function resultQuery(text: string, values?: any[]) {
   const query = await pool.query(text, values);
   if (query.rowCount === 0) return null;
   if (query.rowCount === 1) return query.rows[0]
+  return query.rows;
+}
+
+async function resultQueryArray(text: string, values?: any[]) {
+  const query = await pool.query(text, values);
+  //if (query.rowCount === 0) return null;
   return query.rows;
 }
 

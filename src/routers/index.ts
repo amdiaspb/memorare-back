@@ -1,3 +1,5 @@
 export * from "./users-router";
 export * from "./auth-router";
-export * from "./workshop-router";
+export * from "./decks-router";
+export * from "./studies-router";
+export * from "./cards-router";

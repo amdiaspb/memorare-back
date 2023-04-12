@@ -12,6 +12,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  deck_count: number;
   created_at: Date;
   updated_at: Date;
 }
@@ -104,6 +105,31 @@ export type StudySession = {
   study_id: number;
   created_at: Date;
   updated_at: Date;
+}
+
+// JSON NESTED TYPES ======================================================
+
+export type DeckSnapshotCard = {
+  front: string,
+  back: string
+} 
+
+export type StudySessionState = {
+  date: string,
+  total: number[],
+  today: number[]
+}
+
+export type StudySessionContent = {
+  cards: number[],
+  study: StudySessionContentCard[],
+  review: StudySessionContentCard[]
+}
+
+export type StudySessionContentCard = {
+  index: number,
+  interval: number,
+  date: Date
 }
 
 // ========================================================================

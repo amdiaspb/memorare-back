@@ -1,17 +1,6 @@
 import { db } from "@/configs";
 import { User } from "@/protocols";
 
-// FIND =========================================================================
-
-function findUnique(login: string): Promise<User> {
-  const field = login.includes("@") ? "email" : "name";
-  const user = db.rquery(`
-    SELECT * FROM "user" WHERE ${field}=$1
-  `, [login]);
-
-  return user;
-}
-
 // CREATE ========================================================================
 
 function create(name: string, email: string, password: string): Promise<UserCreated> {
@@ -25,9 +14,40 @@ function create(name: string, email: string, password: string): Promise<UserCrea
 
 export type UserCreated = Pick<User, "id" | "name" | "email">;
 
+// FIND =========================================================================
+
+function findUnique(login: string): Promise<User> {
+  const field = login.includes("@") ? "email" : "name";
+  const user = db.rquery(`
+    SELECT * FROM "user" WHERE ${field}=$1
+  `, [login]);
+
+  return user;
+}
+
+function findById(userId: number): Promise<User> {
+  const user = db.rquery(`
+    SELECT * FROM "user" WHERE id=$1
+  `, [userId]);
+
+  return user;
+}
+
+// UPDATE ========================================================================
+
+function updateDeckCountById(deckCount: number, userId: number): Promise<void> {
+  const result = db.rquery(`
+    UPDATE "user" SET deck_count=$1 WHERE id=$2;
+  `, [deckCount, userId]);
+
+  return result;
+}
+
 // ==============================================================================
 
 export const userRepository = {
+  create,
   findUnique,
-  create
+  findById,
+  updateDeckCountById
 }

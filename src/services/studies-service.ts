@@ -11,7 +11,7 @@ import { shuffle } from "@/utils/helper";
 // CREATE =======================================================================
 
 async function createStudy(userId: number, snapshotId: number): Promise<CreateStudyReturn> {
-  let study = await studiesRepository.findByDeckSnapshotId(snapshotId);
+  let study = await studiesRepository.findByDeckSnapshotIdAndUserId(snapshotId, userId);
   if (study) throw conflictError();
 
   study = await studiesRepository.create(userId, snapshotId);
@@ -53,10 +53,8 @@ async function findFormatedStudies(userId: number): Promise<FormatedStudy[]> {
     delete study.cards_limit;
     delete study.reviews_limit;
 
-    if (!study.state) break;
-
     const state = JSON.parse(study.state) as StudySessionState;
-    if (dayjs(state.date).isAfter(today, "day")) break;
+    if (dayjs(state.date).isSame(today, "day")) break;
 
     state.date = today.toISOString();
     state.today[0] = Math.min(cards_limit, state.total[0]);

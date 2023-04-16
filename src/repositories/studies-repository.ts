@@ -65,6 +65,14 @@ function findByDeckSnapshotId(deckSnapshotId: number): Promise<Study> {
   return study;
 }
 
+function findByDeckSnapshotIdAndUserId(deckSnapshotId: number, userId: number): Promise<Study> {
+  const study = db.rquery(`
+    SELECT * FROM "study" WHERE deck_snapshot_id=$1 AND user_id=$2;
+  `, [deckSnapshotId, userId]);
+
+  return study;
+}
+
 function findManyFormatedStudies(userId: number): Promise<FormatedStudy[]> {
   const study = db.rquerya(`
     SELECT st.id, ds.name, ss.state, ds.updated_at AS "deckDate",
@@ -178,6 +186,7 @@ export const studiesRepository = {
   findManyByDeckSnapshotId,
   findManyBySnapshotIdNotId,
   findByDeckSnapshotId,
+  findByDeckSnapshotIdAndUserId,
   findManyFormatedStudies,
   findInfoById,
   findSessionByStudyId,

@@ -6,8 +6,8 @@ export const postCardSchema = joi.object({
 });
 
 export const patchCardSchema = joi.object<PatchCardData>({
-  front: joi.string().required(),
-  back: joi.string().required()
+  front: joi.string().allow('').required(),
+  back: joi.string().allow('').required()
 });
 
 export type PatchCardData = Pick<Card, "front" | "back">;
